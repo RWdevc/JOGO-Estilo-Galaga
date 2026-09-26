@@ -1,0 +1,125 @@
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; }
+body {
+  background:#000;
+  color:#fff;
+  font-family:"Courier New",monospace;
+  display:flex; justify-content:center; align-items:flex-start;
+  min-height:100vh; min-height:100dvh;
+  overflow-x:hidden;
+  user-select:none; -webkit-user-select:none;
+  touch-action:manipulation;
+}
+#cabinet {
+  width:100%; max-width:480px;
+  display:flex; flex-direction:column; align-items:stretch;
+  padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+  gap:6px;
+}
+#top-hud {
+  display:flex; justify-content:space-between; align-items:center;
+  background:#0a0a0a; border:2px solid #222;
+  padding:6px 10px;
+  image-rendering:pixelated;
+}
+.hud-block { display:flex; flex-direction:column; line-height:1.1; }
+.hud-block.center { text-align:center; }
+.hud-block.right { text-align:right; }
+.hud-label { font-size:10px; letter-spacing:1px; color:#0ff; text-shadow:0 0 6px #0ff; }
+.hud-value { font-size:18px; font-weight:bold; color:#ff0; text-shadow:0 0 8px #f80; font-variant-numeric:tabular-nums; }
+.hud-value.lives { color:#f33; text-shadow:0 0 8px #f00; font-size:16px; letter-spacing:2px; }
+
+#screen-wrap {
+  position:relative;
+  width:100%;
+  aspect-ratio:3/4;
+  max-height:70vh; max-height:70dvh;
+  margin:0 auto;
+  background:#000;
+  border:3px solid #333;
+  box-shadow:0 0 0 2px #111, 0 0 24px #0ff3;
+  overflow:hidden;
+}
+#game {
+  width:100%; height:100%;
+  display:block;
+  background:#000;
+  image-rendering:pixelated; image-rendering:crisp-edges;
+}
+#overlay {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; text-align:center;
+  background:rgba(0,0,0,.88);
+  padding:16px;
+  z-index:5;
+}
+#overlay.hidden { display:none; }
+#ov-title {
+  font-size:42px; line-height:.95; letter-spacing:2px;
+  color:#ff0; text-shadow:3px 3px 0 #f0f, 0 0 18px #ff0;
+}
+#ov-sub { color:#0ff; font-size:14px; text-shadow:0 0 8px #0ff; }
+#ov-help { font-size:12px; color:#ccc; line-height:1.5; background:#111; border:1px solid #333; padding:8px 10px; }
+#ov-help b { color:#ff0; }
+#ov-wave { color:#0f0; font-size:13px; text-shadow:0 0 8px #0f0; }
+#btn-start {
+  font-family:inherit; font-size:16px; font-weight:bold;
+  background:#ff0; color:#000; border:0;
+  padding:14px 18px; cursor:pointer;
+  box-shadow:0 4px 0 #a80, 0 0 16px #ff0;
+}
+#btn-start:active { transform:translateY(3px); box-shadow:0 1px 0 #a80; }
+#flash-msg {
+  position:absolute; top:38%; left:0; right:0;
+  text-align:center; font-size:22px; font-weight:bold;
+  color:#fff; text-shadow:2px 2px 0 #f0f, 0 0 14px #0ff;
+  opacity:0; pointer-events:none; z-index:4;
+  transition:opacity .15s;
+}
+#flash-msg.show { opacity:1; }
+
+#bottom-hud { display:flex; flex-direction:column; gap:6px; }
+#energy-top {
+  display:flex; justify-content:space-between;
+  font-size:11px; letter-spacing:1px; color:#0f0; text-shadow:0 0 6px #0f0;
+}
+#energy-num { color:#fff; }
+#energy-wrap {
+  position:relative; height:22px;
+  background:#200; border:2px solid #555; overflow:hidden;
+}
+#energy-fill {
+  height:100%; width:100%;
+  background:linear-gradient(90deg,#0f0,#ff0 60%,#f00 95%);
+  background-size:480px 100%;
+  transition:width .12s linear;
+  box-shadow:0 0 12px #0f0;
+}
+#energy-wrap.low #energy-fill { animation:blink .3s steps(2) infinite; box-shadow:0 0 12px #f00; }
+@keyframes blink { 50% { filter:brightness(.5); } }
+#energy-ticks {
+  position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(90deg,transparent 0 9px,rgba(0,0,0,.6) 9px 11px);
+}
+#touch-controls { display:flex; gap:8px; justify-content:space-between; }
+.tbtn {
+  flex:1; font-family:inherit; font-weight:bold; font-size:22px;
+  padding:14px 0; background:#151515; color:#0ff;
+  border:2px solid #0ff; border-radius:8px; cursor:pointer;
+  touch-action:none;
+}
+.tbtn:active, .tbtn.held { background:#0ff; color:#000; }
+.tbtn.fire { flex:1.4; color:#ff0; border-color:#ff0; }
+.tbtn.fire:active, .tbtn.fire.held { background:#ff0; color:#000; }
+#hint { text-align:center; font-size:10px; color:#666; }
+
+/* Desktop: esconde botões touch se mouse fino + sem touch */
+@media (hover:hover) and (pointer:fine) {
+  #touch-controls { display:none; }
+  #screen-wrap { max-height:74vh; }
+}
+@media (max-width:360px) {
+  #ov-title { font-size:32px; }
+  .hud-value { font-size:15px; }
+}
